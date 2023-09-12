@@ -2,10 +2,11 @@
 
 CGPS_CLASS(sample_name);
 
-void thefunc(void)
+CGPS_FUNC_DEF_LOG_START(void,thefunc,void)
 {
   cgps_print("there\n");
 }
+CGPS_FUNC_DEF_LOG_END(())
 
 CGPS_FUNC_DEF_START(int, main, void)
 {
