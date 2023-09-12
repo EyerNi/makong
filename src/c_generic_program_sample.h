@@ -14,7 +14,7 @@
 /**/
 #define cgps_print(a, b...) printf(a, ##b)
 
-/*wtf is this mem leak?*/
+/*?wtf is this mem leak?*/
 #if 0
 #define printf(a, b...)
 #endif
