@@ -1,6 +1,7 @@
 # 12/9/2023
   disabled the printf in .h the mem leak msg will gone...but why?
 #
+--export MALLOC_TRACE=mtrace.log
 --make
   gcc src/c_generic_program_sample.c -c -Wall -g -o c_generic_program_sample.o
   gcc c_generic_program_sample.o -g -o a.o

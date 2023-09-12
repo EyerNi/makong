@@ -14,8 +14,8 @@
 /**/
 #define cgps_print(a, b...) printf(a, ##b)
 
-/*?wtf is this mem leak?*/
-#if 0
+/*?why mtrace shows "printf" cause mem leak?*/
+#if /*1 fix mtrace shows mem leak*/0
 #define printf(a, b...)
 #endif
 
