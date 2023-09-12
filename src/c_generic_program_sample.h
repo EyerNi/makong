@@ -10,12 +10,13 @@
 /**/
 #define cgps_form(x) form(x)
 #define form(x) #x
+#define CGPS_LOG cgps:%s
 
 /**/
-#define cgps_print(a, b...) printf(a, ##b)
+#define cgps_print(a, b...) printf(cgps_form(CGPS_LOG) a, "->", ##b)
 
 /*?why mtrace shows "printf" cause mem leak?*/
-#if /*1 fix mtrace shows mem leak*/0
+#if /*1 fix mtrace shows mem leak*/ 0
 #define printf(a, b...)
 #endif
 
@@ -56,11 +57,11 @@
   CGPS_FUNC_DEF_START(void,                                       \
                       cgps_ns(name, func, get_obj),               \
                       cgps_ns(name, pst) obj)                     \
-  cgps_print("-> %d\n", (*obj).cgps_ns(name, starg, id));         \
+  cgps_print("%d\n", (*obj).cgps_ns(name, starg, id));            \
   CGPS_FUNC_DEF_END(())                                           \
   void cgps_ns(name, func, mberp)(void)                           \
   {                                                               \
-    cgps_print("-> here\n");                                      \
+    cgps_print("here\n");                                         \
   }                                                               \
   CGPS_FUNC_DEF_START(void,                                       \
                       cgps_ns(name, func, def_construct_obj),     \

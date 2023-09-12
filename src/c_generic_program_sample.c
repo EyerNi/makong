@@ -4,7 +4,7 @@ CGPS_CLASS(sample_name);
 
 void thefunc(void)
 {
-  printf("-> there\n");
+  cgps_print("there\n");
 }
 
 CGPS_FUNC_DEF_START(int, main, void)
