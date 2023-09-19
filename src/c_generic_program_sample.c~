@@ -11,9 +11,7 @@ CGPS_FUNC_DEF_LOG_END(())
 CGPS_FUNC_DEF_START(int, main, void)
 {
   mtrace();
-  
-  printf("%s\n",cgps_form(test(addr)));
-  
+
   /*mem*/
   cgps_ns(sample_name, pst) sample_obj = cgps_ns(sample_name, func, new_obj)();
 
@@ -29,7 +27,7 @@ CGPS_FUNC_DEF_START(int, main, void)
   cgps_ns(sample_name, func, get_obj)(sample_obj);
 
   /*reconstruct ptr func*/
-  cgps_ns(sample_name, func, re_construct_obj)(sample_obj, thefunc,16);
+  cgps_ns(sample_name, func, re_construct_obj)(sample_obj, thefunc);
   (*sample_obj).cgps_ns(sample_name, func, mberp)();
 
   /*mem*/

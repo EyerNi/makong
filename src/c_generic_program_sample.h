@@ -9,6 +9,8 @@
 #include <string.h>
 
 /**/
+#define test(x) goto __##x##__:
+/**/
 #define cgps_form(x) form(x)
 #define form(x) #x
 #define CGPS_LOG cgps:%s%s
@@ -25,8 +27,8 @@
 #define cgps_ns(name, mberType, mberName...) cgps_##name##_##mberType##_##mberName
 
 /**/
-#define CGPS_FUNC_DEF_LOG_START(output, funcname, input, arg...)     \
-  output funcname(input, ##arg)                                      \
+#define CGPS_FUNC_DEF_LOG_START(output, funcname, ...)               \
+  output funcname(__VA_ARGS__)                                       \
   {                                                                  \
     char *sample_str = (char *)malloc((size_t)strlen(__func__) + 1); \
     memset(sample_str, 0, (size_t)strlen(__func__) + 1);             \
@@ -50,45 +52,48 @@
     void (*cgps_ns(name, func, mberp))(void); \
   } cgps_ns(name, st), *cgps_ns(name, pst);
 
-#define CGPS_IMPL(name)                                            \
-  CGPS_FUNC_DEF_START(cgps_ns(name, pst),                          \
-                      cgps_ns(name, func, new_obj),                \
-                      void)                                        \
-  return (cgps_ns(name, pst))malloc(sizeof(cgps_ns(name, st)));    \
-  CGPS_FUNC_DEF_END(())                                            \
-  CGPS_FUNC_DEF_START(void,                                        \
-                      cgps_ns(name, func, del_obj),                \
-                      cgps_ns(name, pst) obj)                      \
-  return (void)free(obj);                                          \
-  CGPS_FUNC_DEF_END(())                                            \
-  CGPS_FUNC_DEF_LOG_START(void,                                    \
-                          cgps_ns(name, func, set_obj),            \
-                          cgps_ns(name, pst) obj, int val)         \
-  cgps_print("obj seting...\n");                                   \
-  (*obj).cgps_ns(name, starg, id) = val;                           \
-  CGPS_FUNC_DEF_LOG_END(())                                        \
-  CGPS_FUNC_DEF_LOG_START(void,                                    \
-                          cgps_ns(name, func, get_obj),            \
-                          cgps_ns(name, pst) obj)                  \
-  cgps_print("%d\n", (*obj).cgps_ns(name, starg, id));             \
-  CGPS_FUNC_DEF_LOG_END(())                                        \
-  CGPS_FUNC_DEF_LOG_START(void,                                    \
-                          cgps_ns(name, func, mberp),              \
-                          void)                                    \
-  cgps_print("here\n");                                            \
-  CGPS_FUNC_DEF_LOG_END(())                                        \
-  CGPS_FUNC_DEF_LOG_START(void,                                    \
-                          cgps_ns(name, func, def_construct_obj),  \
-                          cgps_ns(name, pst) obj)                  \
-  cgps_print("default constructing...\n");                         \
-  (*obj).cgps_ns(name, func, mberp) = cgps_ns(name, func, mberp);  \
-  (*obj).cgps_ns(name, starg, id) = 16;                            \
-  CGPS_FUNC_DEF_LOG_END(())                                        \
-  CGPS_FUNC_DEF_LOG_START(void,                                    \
-                          cgps_ns(name, func, re_construct_obj),   \
-                          cgps_ns(name, pst) obj, void (*p)(void)) \
-  cgps_print("re constructing...\n");                              \
-  (*obj).cgps_ns(name, func, mberp) = p;                           \
+#define CGPS_IMPL(name)                                           \
+  CGPS_FUNC_DEF_START(cgps_ns(name, pst),                         \
+                      cgps_ns(name, func, new_obj),               \
+                      void)                                       \
+  return (cgps_ns(name, pst))malloc(sizeof(cgps_ns(name, st)));   \
+  CGPS_FUNC_DEF_END(())                                           \
+  CGPS_FUNC_DEF_START(void,                                       \
+                      cgps_ns(name, func, del_obj),               \
+                      cgps_ns(name, pst) obj)                     \
+  return (void)free(obj);                                         \
+  CGPS_FUNC_DEF_END(())                                           \
+  CGPS_FUNC_DEF_LOG_START(void,                                   \
+                          cgps_ns(name, func, set_obj),           \
+                          cgps_ns(name, pst) obj, int val)        \
+  cgps_print("obj seting...\n");                                  \
+  (*obj).cgps_ns(name, starg, id) = val;                          \
+  CGPS_FUNC_DEF_LOG_END(())                                       \
+  CGPS_FUNC_DEF_LOG_START(void,                                   \
+                          cgps_ns(name, func, get_obj),           \
+                          cgps_ns(name, pst) obj)                 \
+  cgps_print("%d\n", (*obj).cgps_ns(name, starg, id));            \
+  CGPS_FUNC_DEF_LOG_END(())                                       \
+  CGPS_FUNC_DEF_LOG_START(void,                                   \
+                          cgps_ns(name, func, mberp),             \
+                          void)                                   \
+  cgps_print("here\n");                                           \
+  CGPS_FUNC_DEF_LOG_END(())                                       \
+  CGPS_FUNC_DEF_LOG_START(void,                                   \
+                          cgps_ns(name, func, def_construct_obj), \
+                          cgps_ns(name, pst) obj)                 \
+  cgps_print("default constructing...\n");                        \
+  (*obj).cgps_ns(name, func, mberp) = cgps_ns(name, func, mberp); \
+  (*obj).cgps_ns(name, starg, id) = 16;                           \
+  CGPS_FUNC_DEF_LOG_END(())                                       \
+  CGPS_FUNC_DEF_LOG_START(void,                                   \
+                          cgps_ns(name, func, re_construct_obj),  \
+                          cgps_ns(name, pst) obj,                 \
+                          void (*p)(void),                        \
+                          int testcnt)                            \
+  cgps_print("re constructing...\n");                             \
+  cgps_print("thistestcnt?%d\n", testcnt);                        \
+  (*obj).cgps_ns(name, func, mberp) = p;                          \
   CGPS_FUNC_DEF_LOG_END(())
 
 #define CGPS_CLASS(name) \
