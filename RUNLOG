@@ -6,15 +6,19 @@
   gcc src/c_generic_program_sample.c -c -Wall -g -o c_generic_program_sample.o
   gcc c_generic_program_sample.o -g -o a.o
 --./a.o
-  default constructing...
-  -> 16
-  -> here
-  obj seting...
-  -> 19
-  re constructing...
-  -> there
+  goto __addr__:
+  cgps:cgps_sample_name_func_def_construct_obj->default constructing...
+  cgps:cgps_sample_name_func_get_obj->16
+  cgps:cgps_sample_name_func_mberp->here
+  cgps:cgps_sample_name_func_set_obj->obj seting...
+  cgps:cgps_sample_name_func_get_obj->19
+  cgps:cgps_sample_name_func_re_construct_obj->re constructing...
+  cgps:cgps_sample_name_func_re_construct_obj->thistestcnt?16
+  cgps:thefunc->there
+
 --mtrace a.o mtrace.log
   Memory not freed:
   -----------------
   Address     Size     Caller
-  0x0000000000bc0470    0x400  at 0x7f07bdb631e5
+  0x0000000000940450    0x400  at 0x7f138ab621e5
+
